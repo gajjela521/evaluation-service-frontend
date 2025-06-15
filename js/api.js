@@ -1,82 +1,85 @@
-// API utility class
-class API {
-    constructor() {
-        this.baseURL = window.APP_CONFIG.API.BASE_URL;
-        this.headers = {
-            'Content-Type': 'application/json'
-        };
-    }
+const API_BASE_URL = 'https://evaluation-service-latest.onrender.com';
 
-    async request(endpoint, options = {}) {
-        const url = `${this.baseURL}${endpoint}`;
-        const config = {
-            headers: this.headers,
-            ...options
-        };
-
-        try {
-            const response = await fetch(url, config);
-
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
-
-            return await response.json();
-        } catch (error) {
-            console.error('API Request failed:', error);
-            throw error;
+async function apiRequest(endpoint, options = {}) {
+    const url = `${API_BASE_URL}${endpoint}`;
+    const defaultOptions = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Origin': 'https://gajjela521.github.io'
         }
-    }
+    };
 
-    // GET request
-    async get(endpoint) {
-        return this.request(endpoint, { method: 'GET' });
-    }
+    try {
+        const response = await fetch(url, { ...defaultOptions, ...options });
 
-    // POST request
-    async post(endpoint, data) {
-        return this.request(endpoint, {
-            method: 'POST',
-            body: JSON.stringify(data)
-        });
-    }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-    // DELETE request
-    async delete(endpoint) {
-        return this.request(endpoint, { method: 'DELETE' });
-    }
-
-    // Health check
-    async checkHealth() {
-        return this.get(window.APP_CONFIG.API.ENDPOINTS.HEALTH);
-    }
-
-    // Exam-related API calls
-    async getSubjects(classId) {
-        return this.get(`${window.APP_CONFIG.API.ENDPOINTS.SUBJECTS}?classId=${classId}`);
-    }
-
-    async getExamSlots(examDate, subjectId) {
-        return this.get(`${window.APP_CONFIG.API.ENDPOINTS.SLOTS}?examDate=${examDate}&subjectId=${subjectId}`);
-    }
-
-    async bookExamSlot(studentId, slotId, subjectId) {
-        return this.post(window.APP_CONFIG.API.ENDPOINTS.BOOK, {
-            studentId,
-            slotId,
-            subjectId
-        });
-    }
-
-    async cancelRegistration(registrationId, studentId) {
-        return this.delete(`${window.APP_CONFIG.API.ENDPOINTS.CANCEL}/${registrationId}?studentId=${studentId}`);
-    }
-
-    async getScores(params = {}) {
-        const queryString = new URLSearchParams(params).toString();
-        return this.get(`${window.APP_CONFIG.API.ENDPOINTS.SCORES}?${queryString}`);
+        return await response.json();
+    } catch (error) {
+        console.error('API request failed:', error);
+        throw error;
     }
 }
 
-// Global API instance
-window.api = new API();
+// Student API Functions
+const StudentAPI = {
+    // Get available subjects
+    async getSubjects(classId) {
+        return apiRequest(`/api/exams/subjects?classId=${classId}`);
+    },
+
+    // Get exam slots
+    async getExamSlots(examDate, subjectId) {
+        return apiRequest(`/api/exams/slots?examDate=${examDate}&subjectId=${subjectId}`);
+    },
+
+    // Book an exam
+    async bookExam(examData) {
+        return apiRequest('/api/exams/book', {
+            method: 'POST',
+            body: JSON.stringify(examData)
+        });
+    },
+
+    // Cancel exam registration
+    async cancelExam(examId, studentId) {
+        return apiRequest(`/api/exams/cancel/${examId}?studentId=${studentId}`, {
+            method: 'DELETE'
+        });
+    },
+
+    // Get student scores
+    async getScores(studentId) {
+        return apiRequest(`/evaluation/scores?studentId=${studentId}`);
+    }
+};
+
+// Teacher API Functions
+const TeacherAPI = {
+    // Submit grades
+    async submitGrades(gradeData) {
+        return apiRequest('/evaluation/submit', {
+            method: 'POST',
+            body: JSON.stringify(gradeData)
+        });
+    },
+
+    // Get exam results
+    async getExamResults(examId) {
+        return apiRequest(`/evaluation/results/${examId}`);
+    },
+
+    // Get students list
+    async getStudents(classId) {
+        return apiRequest(`/api/students?classId=${classId}`);
+    }
+};
+
+// Health Check
+const SystemAPI = {
+    async healthCheck() {
+        return apiRequest('/actuator/health');
+    }
+};
