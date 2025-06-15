@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration - Evaluation Service</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css">
+</head>
+<body class="bg-light">
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="../index.html">
+            <i class="fas fa-user-plus me-2"></i>Student Registration
+        </a>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="../index.html">Home</a>
+            <a class="nav-link" href="index.html">Student Portal</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-graduation-cap me-2"></i>New Student Registration
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form id="student-registration-form">
+                        <!-- Personal Information -->
+                        <h5 class="text-primary mb-3">Personal Information</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label">First Name *</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label">Last Name *</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" required>
+                                <div id="email-feedback" class="form-text"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="dateOfBirth" class="form-label">Date of Birth *</label>
+                                <input type="date" class="form-control" id="dateOfBirth" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="gender" class="form-label">Gender *</label>
+                                <select class="form-select" id="gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Academic Information -->
+                        <h5 class="text-primary mb-3 mt-4">Academic Information</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="studentId" class="form-label">Student ID *</label>
+                                <input type="text" class="form-control" id="studentId" required>
+                                <div class="form-text">This will be your unique identifier</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="classId" class="form-label">Class/Grade *</label>
+                                <select class="form-select" id="classId" required>
+                                    <option value="">Select Class</option>
+                                    <option value="grade-9">Grade 9</option>
+                                    <option value="grade-10">Grade 10</option>
+                                    <option value="grade-11">Grade 11</option>
+                                    <option value="grade-12">Grade 12</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="section" class="form-label">Section</label>
+                                <select class="form-select" id="section">
+                                    <option value="">Select Section</option>
+                                    <option value="A">Section A</option>
+                                    <option value="B">Section B</option>
+                                    <option value="C">Section C</option>
+                                    <option value="D">Section D</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="rollNumber" class="form-label">Roll Number</label>
+                                <input type="text" class="form-control" id="rollNumber">
+                            </div>
+                        </div>
+
+                        <!-- Address Information -->
+                        <h5 class="text-primary mb-3 mt-4">Address Information</h5>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address *</label>
+                            <textarea class="form-control" id="address" rows="3" required></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="city" class="form-label">City *</label>
+                                <input type="text" class="form-control" id="city" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="zipCode" class="form-label">ZIP Code *</label>
+                                <input type="text" class="form-control" id="zipCode" required>
+                            </div>
+                        </div>
+
+                        <!-- Emergency Contact -->
+                        <h5 class="text-primary mb-3 mt-4">Emergency Contact</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="guardianName" class="form-label">Guardian Name *</label>
+                                <input type="text" class="form-control" id="guardianName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="guardianPhone" class="form-label">Guardian Phone *</label>
+                                <input type="tel" class="form-control" id="guardianPhone" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="guardianEmail" class="form-label">Guardian Email</label>
+                            <input type="email" class="form-control" id="guardianEmail">
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I agree to the <a href="#" target="_blank">Terms and Conditions</a> and <a href="#" target="_blank">Privacy Policy</a> *
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Register Student
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Result Display -->
+                    <div id="registration-result" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('student-registration-form');
+        const emailInput = document.getElementById('email');
+        const emailFeedback = document.getElementById('email-feedback');
+
+        // Email validation on blur
+        emailInput.addEventListener('blur', async function() {
+            const email = this.value;
+            if (email && Utils.validateEmail(email)) {
+                try {
+                    // Simulate email check (replace with actual API call)
+                    emailFeedback.innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>Email available</span>';
+                    emailFeedback.className = 'form-text text-success';
+                } catch (error) {
+                    emailFeedback.innerHTML = '<span class="text-warning">Unable to check email</span>';
+                    emailFeedback.className = 'form-text text-warning';
+                }
+            } else if (email) {
+                emailFeedback.innerHTML = '<span class="text-danger">Invalid email format</span>';
+                emailFeedback.className = 'form-text text-danger';
+            }
+        });
+
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Validate required fields
+            const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'dateOfBirth', 'gender', 'studentId', 'classId', 'address', 'city', 'zipCode', 'guardianName', 'guardianPhone'];
+            let isValid = true;
+
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            if (!document.getElementById('agreeTerms').checked) {
+                Utils.showError('registration-result', 'Please agree to the Terms and Conditions');
+                return;
+            }
+
+            if (!isValid) {
+                Utils.showError('registration-result', 'Please fill in all required fields');
+                return;
+            }
+
+            const formData = {
+                studentId: document.getElementById('studentId').value,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                gender: document.getElementById('gender').value,
+                classId: document.getElementById('classId').value,
+                section: document.getElementById('section').value,
+                rollNumber: document.getElementById('rollNumber').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                zipCode: document.getElementById('zipCode').value,
+                guardianName: document.getElementById('guardianName').value,
+                guardianPhone: document.getElementById('guardianPhone').value,
+                guardianEmail: document.getElementById('guardianEmail').value
+            };
+
+            Utils.showLoading('registration-result');
+
+            try {
+                // Simulate successful registration (replace with actual API call)
+                setTimeout(() => {
+                    Utils.showSuccess('registration-result',
+                        `Registration submitted successfully! Student ID: ${formData.studentId}. Please check your email for further instructions.`
+                    );
+                    form.reset();
+                }, 2000);
+
+                // Uncomment when backend is ready:
+                // const result = await StudentRegistrationAPI.registerStudent(formData);
+                // Utils.showSuccess('registration-result',
+                //     `Registration successful! Your Student ID is: ${result.studentId}. Please check your email for further instructions.`
+                // );
+
+            } catch (error) {
+                Utils.showError('registration-result',
+                    `Registration failed: ${error.message}`
+                );
+            }
+        });
+    });
+</script>
+</body>
+</html>

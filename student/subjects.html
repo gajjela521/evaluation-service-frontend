@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Subjects - Student Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css">
+</head>
+<body class="bg-light">
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <i class="fas fa-book me-2"></i>Browse Subjects
+        </a>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="index.html">Dashboard</a>
+            <a class="nav-link" href="booking.html">Register for Exam</a>
+            <a class="nav-link" href="../index.html">Home</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <!-- Filter Bar -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <label for="filter-class" class="form-label">Filter by Class:</label>
+                            <select class="form-select" id="filter-class">
+                                <option value="">All Classes</option>
+                                <option value="grade-9">Grade 9</option>
+                                <option value="grade-10">Grade 10</option>
+                                <option value="grade-11">Grade 11</option>
+                                <option value="grade-12">Grade 12</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="search-subjects" class="form-label">Search Subjects:</label>
+                            <input type="text" class="form-control" id="search-subjects"
+                                   placeholder="Search by subject name or instructor...">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <button class="btn btn-primary w-100" onclick="filterSubjects()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h5 id="total-subjects">12</h5>
+                    <p class="mb-0 text-muted">Total Subjects Available</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subjects Grid -->
+    <div class="row" id="subjects-container">
+        <!-- Subject cards will be loaded here -->
+    </div>
+</div>
+
+<!-- Subject Details Modal -->
+<div class="modal fade" id="subjectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-subject-name">Subject Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="subject-details">
+                <!-- Subject details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="booking.html" class="btn btn-primary">
+                    <i class="fas fa-calendar-plus me-2"></i>Register for Exam
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/api.js"></script>
+<script>
+    // Sample subjects data (replace with API call)
+    let allSubjects = [
+        {
+            id: 'math-101',
+            name: 'Advanced Mathematics',
+            code: 'MATH101',
+            credits: 4,
+            classId: 'grade-12',
+            description: 'Advanced calculus, linear algebra, and differential equations',
+            instructor: 'Dr. Sarah Johnson',
+            examDuration: 180,
+            passingScore: 70,
+            isActive: true,
+            prerequisites: 'Basic Mathematics, Algebra II',
+            syllabus: ['Calculus I', 'Calculus II', 'Linear Algebra', 'Differential Equations']
+        },
+        {
+            id: 'phys-101',
+            name: 'Classical Physics',
+            code: 'PHYS101',
+            credits: 3,
+            classId: 'grade-11',
+            description: 'Mechanics, thermodynamics, and electromagnetic theory',
+            instructor: 'Prof. Michael Chen',
+            examDuration: 120,
+            passingScore: 65,
+            isActive: true,
+            prerequisites: 'Basic Physics, Mathematics',
+            syllabus: ['Mechanics', 'Thermodynamics', 'Electromagnetism', 'Optics']
+        },
+        {
+            id: 'chem-101',
+            name: 'General Chemistry',
+            code: 'CHEM101',
+            credits: 3,
+            classId: 'grade-10',
+            description: 'Atomic structure, chemical bonding, and reactions',
+            instructor: 'Dr. Emily Rodriguez',
+            examDuration: 150,
+            passingScore: 65,
+            isActive: true,
+            prerequisites: 'Basic Chemistry',
+            syllabus: ['Atomic Structure', 'Chemical Bonding', 'Reactions', 'Stoichiometry']
+        },
+        {
+            id: 'eng-101',
+            name: 'English Literature',
+            code: 'ENG101',
+            credits: 2,
+            classId: 'grade-10',
+            description: 'Classic and modern literature analysis',
+            instructor: 'Ms. Amanda Wilson',
+            examDuration: 90,
+            passingScore: 60,
+            isActive: true,
+            prerequisites: 'Basic English',
+            syllabus: ['Poetry Analysis', 'Novel Studies', 'Drama', 'Essay Writing']
+        },
+        {
+            id: 'bio-101',
+            name: 'Biology',
+            code: 'BIO101',
+            credits: 3,
+            classId: 'grade-11',
+            description: 'Cell biology, genetics, and human anatomy',
+            instructor: 'Dr. Robert Lee',
+            examDuration: 120,
+            passingScore: 65,
+            isActive: true,
+            prerequisites: 'Basic Biology',
+            syllabus: ['Cell Biology', 'Genetics', 'Anatomy', 'Physiology']
+        },
+        {
+            id: 'hist-101',
+            name: 'World History',
+            code: 'HIST101',
+            credits: 2,
+            classId: 'grade-9',
+            description: 'Ancient civilizations to modern times',
+            instructor: 'Prof. Lisa Brown',
+            examDuration: 90,
+            passingScore: 60,
+            isActive: true,
+            prerequisites: 'None',
+            syllabus: ['Ancient History', 'Medieval Period', 'Renaissance', 'Modern History']
+        }
+    ];
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadAllSubjects();
+
+        // Search functionality
+        document.getElementById('search-subjects').addEventListener('input', filterSubjects);
+        document.getElementById('filter-class').addEventListener('change', filterSubjects);
+    });
+
+    // Load all subjects
+    function loadAllSubjects() {
+        displaySubjects(allSubjects);
+        updateTotalCount(allSubjects.length);
+    }
+
+    // Display subjects in grid
+    function displaySubjects(subjects) {
+        const container = document.getElementById('subjects-container');
+
+        if (subjects.length === 0) {
+            container.innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        <i class="fas fa-info-circle me-2"></i>
+                        No subjects found matching your criteria.
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        const subjectsHtml = subjects.map(subject => `
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 subject-card" style="cursor: pointer;" onclick="showSubjectDetails('${subject.id}')">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">${subject.name}</h6>
+                            <span class="badge bg-light text-primary">${subject.credits} Credits</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text text-muted mb-3">${subject.description}</p>
+                        <div class="mb-2">
+                            <small class="text-muted">
+                                <i class="fas fa-graduation-cap me-2"></i>Class: ${subject.classId.replace('-', ' ').toUpperCase()}
+                            </small>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-2"></i>Duration: ${subject.examDuration} minutes
+                            </small>
+                        </div>
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-user me-2"></i>Instructor: ${subject.instructor}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                ${subject.isActive ?
+                                    '<span class="badge bg-success">Active</span>' :
+                                    '<span class="badge bg-secondary">Inactive</span>'
+                                }
+                            </small>
+                            <button class="btn btn-sm btn-outline-primary" onclick="event.stopPropagation(); registerForSubject('${subject.id}')">
+                                <i class="fas fa-plus me-1"></i>Register
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        container.innerHTML = subjectsHtml;
+    }
+
+    // Filter subjects
+    function filterSubjects() {
+        const classFilter = document.getElementById('filter-class').value;
+        const searchTerm = document.getElementById('search-subjects').value.toLowerCase();
+
+        let filteredSubjects = allSubjects;
+
+        // Filter by class
+        if (classFilter) {
+            filteredSubjects = filteredSubjects.filter(subject =>
+                subject.classId === classFilter
+            );
+        }
+
+        // Filter by search term
+        if (searchTerm) {
+            filteredSubjects = filteredSubjects.filter(subject =>
+                subject.name.toLowerCase().includes(searchTerm) ||
+                subject.description.toLowerCase().includes(searchTerm) ||
+                subject.instructor.toLowerCase().includes(searchTerm) ||
+                subject.code.toLowerCase().includes(searchTerm)
+            );
+        }
+
+        displaySubjects(filteredSubjects);
+        updateTotalCount(filteredSubjects.length);
+    }
+
+    // Update total count
+    function updateTotalCount(count) {
+        document.getElementById('total-subjects').textContent = count;
+    }
+
+    // Show subject details
+    function showSubjectDetails(subjectId) {
+        const subject = allSubjects.find(s => s.id === subjectId);
+        if (!subject) return;
+
+        document.getElementById('modal-subject-name').textContent = subject.name;
+        document.getElementById('subject-details').innerHTML = `
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Basic Information</h6>
+                    <p><strong>Subject Code:</strong> ${subject.code}</p>
+                    <p><strong>Credits:</strong> ${subject.credits}</p>
+                    <p><strong>Class:</strong> ${subject.classId.replace('-', ' ').toUpperCase()}</p>
+                    <p><strong>Instructor:</strong> ${subject.instructor}</p>
+                </div>
+                <div class="col-md-6">
+                    <h6>Exam Details</h6>
+                    <p><strong>Duration:</strong> ${subject.examDuration} minutes</p>
+                    <p><strong>Passing Score:</strong> ${subject.passingScore}%</p>
+                    <p><strong>Status:</strong>
+                        ${subject.isActive ?
+                            '<span class="badge bg-success">Active</span>' :
+                            '<span class="badge bg-secondary">Inactive</span>'
+                        }
+                    </p>
+                </div>
+            </div>
+            <div class="mt-3">
+                <h6>Description</h6>
+                <p>${subject.description}</p>
+            </div>
+            ${subject.prerequisites ? `
+                <div class="mt-3">
+                    <h6>Prerequisites</h6>
+                    <p>${subject.prerequisites}</p>
+                </div>
+            ` : ''}
+            ${subject.syllabus ? `
+                <div class="mt-3">
+                    <h6>Syllabus Topics</h6>
+                    <ul>
+                        ${subject.syllabus.map(topic => `<li>${topic}</li>`).join('')}
+                    </ul>
+                </div>
+            ` : ''}
+        `;
+
+        const modal = new bootstrap.Modal(document.getElementById('subjectModal'));
+        modal.show();
+    }
+
+    // Register for subject
+    function registerForSubject(subjectId) {
+        // Redirect to booking page with subject pre-selected
+        window.location.href = `booking.html?subject=${subjectId}`;
+    }
+</script>
+</body>
+</html>
