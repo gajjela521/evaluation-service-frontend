@@ -2,29 +2,23 @@ import { api } from './api';
 import type { ExamSlot, ExamBooking, Subject } from '@/types';
 
 export const examService = {
-  // Get all available subjects
-  async getSubjects(): Promise<Subject[]> {
-    return api.get<Subject[]>('/api/exams/subjects');
+  // Get all available subjects (requires classId)
+  async getSubjects(classId: string = 'default'): Promise<Subject[]> {
+    return api.get<Subject[]>(`/api/exams/subjects?classId=${classId}`);
   },
 
-  // Get available exam slots
-  async getAvailableSlots(subjectId?: string): Promise<ExamSlot[]> {
-    const url = subjectId ? `/api/exams/slots?subjectId=${subjectId}` : '/api/exams/slots';
-    return api.get<ExamSlot[]>(url);
+  // Get available exam slots (requires examDate and subjectId)
+  async getAvailableSlots(examDate: string, subjectId: string): Promise<ExamSlot[]> {
+    return api.get<ExamSlot[]>(`/api/exams/slots?examDate=${examDate}&subjectId=${subjectId}`);
   },
 
   // Book an exam slot
-  async bookExam(slotId: string): Promise<ExamBooking> {
-    return api.post<ExamBooking>('/api/exams/book', { slotId });
-  },
-
-  // Get student's exam bookings
-  async getMyBookings(): Promise<ExamBooking[]> {
-    return api.get<ExamBooking[]>('/api/exams/my-bookings');
+  async bookExam(studentId: string, slotId: string, subjectId: string): Promise<ExamBooking> {
+    return api.post<ExamBooking>('/api/exams/book', { studentId, slotId, subjectId });
   },
 
   // Cancel an exam booking
-  async cancelBooking(bookingId: string): Promise<void> {
-    return api.delete<void>(`/api/exams/cancel/${bookingId}`);
+  async cancelBooking(registrationId: string, studentId: string): Promise<void> {
+    return api.delete<void>(`/api/exams/cancel/${registrationId}?studentId=${studentId}`);
   },
 };

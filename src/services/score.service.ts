@@ -2,28 +2,30 @@ import { api } from './api';
 import type { Score } from '@/types';
 
 export const scoreService = {
-  // Get student's scores
-  async getMyScores(): Promise<Score[]> {
-    return api.get<Score[]>('/api/evaluation/scores');
+  // Get student's scores with optional filters
+  async getMyScores(queryParams?: Record<string, string>): Promise<Score[]> {
+    const params = new URLSearchParams(queryParams).toString();
+    const url = params ? `/evaluation/scores?${params}` : '/evaluation/scores';
+    return api.get<Score[]>(url);
+  },
+
+  // Get scores for a specific student
+  async getScoresByStudent(studentId: string): Promise<Score[]> {
+    return api.get<Score[]>(`/evaluation/scores?studentId=${studentId}`);
   },
 
   // Get scores for a specific subject
   async getScoresBySubject(subjectId: string): Promise<Score[]> {
-    return api.get<Score[]>(`/api/evaluation/scores/subject/${subjectId}`);
+    return api.get<Score[]>(`/evaluation/scores?subjectId=${subjectId}`);
   },
 
-  // For teachers: Get all scores for students in a subject
-  async getSubjectScores(subjectId: string): Promise<Score[]> {
-    return api.get<Score[]>(`/api/evaluation/subject/${subjectId}/scores`);
-  },
-
-  // For teachers: Submit or update a score
-  async submitScore(data: {
+  // For teachers: Submit scoresheets (multiple scores)
+  async submitScoreSheets(scoreSheets: Array<{
     studentId: string;
     subjectId: string;
     marksObtained: number;
     totalMarks: number;
-  }): Promise<Score> {
-    return api.post<Score>('/api/evaluation/scores', data);
+  }>): Promise<string> {
+    return api.post<string>('/evaluation/sheets', scoreSheets);
   },
 };

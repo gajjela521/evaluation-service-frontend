@@ -19,7 +19,7 @@ export function GradingPage() {
       subjectId: string;
       marksObtained: number;
       totalMarks: number;
-    }) => scoreService.submitScore(data),
+    }) => scoreService.submitScoreSheets([data]),
     onSuccess: () => {
       toast.success('Score submitted successfully!');
       setFormData({

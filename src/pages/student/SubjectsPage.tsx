@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 export function SubjectsPage() {
   const { data: subjects, isLoading, error } = useQuery({
     queryKey: ['subjects'],
-    queryFn: examService.getSubjects,
+    queryFn: () => examService.getSubjects('default'),
   });
 
   if (error) {

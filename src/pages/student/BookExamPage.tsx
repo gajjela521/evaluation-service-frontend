@@ -2,29 +2,30 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useSearchParams } from 'react-router-dom';
 import { examService } from '@/services/exam.service';
+import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 
 export function BookExamPage() {
   const [searchParams] = useSearchParams();
-  const subjectId = searchParams.get('subjectId');
+  const subjectId = searchParams.get('subjectId') || '';
   const [selectedSlotId, setSelectedSlotId] = useState<string>('');
+  const [examDate, setExamDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   const { data: slots, isLoading } = useQuery({
-    queryKey: ['exam-slots', subjectId],
-    queryFn: () => examService.getAvailableSlots(subjectId || undefined),
-  });
-
-  const { data: myBookings } = useQuery({
-    queryKey: ['my-bookings'],
-    queryFn: examService.getMyBookings,
+    queryKey: ['exam-slots', subjectId, examDate],
+    queryFn: () => examService.getAvailableSlots(examDate, subjectId),
+    enabled: !!subjectId && !!examDate,
   });
 
   const bookingMutation = useMutation({
-    mutationFn: (slotId: string) => examService.bookExam(slotId),
+    mutationFn: (slotId: string) => {
+      if (!user) throw new Error('User not authenticated');
+      return examService.bookExam(user.id, slotId, subjectId);
+    },
     onSuccess: () => {
       toast.success('Exam booked successfully!');
-      queryClient.invalidateQueries({ queryKey: ['my-bookings'] });
       queryClient.invalidateQueries({ queryKey: ['exam-slots'] });
       setSelectedSlotId('');
     },
@@ -41,10 +42,6 @@ export function BookExamPage() {
     bookingMutation.mutate(selectedSlotId);
   };
 
-  const isSlotBooked = (slotId: string) => {
-    return myBookings?.some((booking) => booking.slotId === slotId);
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm">
@@ -59,6 +56,21 @@ export function BookExamPage() {
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Date Selector */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <label htmlFor="examDate" className="block text-sm font-medium text-gray-700 mb-2">
+            Select Exam Date
+          </label>
+          <input
+            type="date"
+            id="examDate"
+            value={examDate}
+            onChange={(e) => setExamDate(e.target.value)}
+            min={new Date().toISOString().split('T')[0]}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
         {isLoading && (
           <div className="flex justify-center items-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -83,9 +95,8 @@ export function BookExamPage() {
               <h2 className="text-xl font-semibold mb-4">Available Exam Slots</h2>
               <div className="space-y-4">
                 {slots.map((slot) => {
-                  const booked = isSlotBooked(slot.id);
                   const isFull = slot.status === 'full';
-                  const isDisabled = booked || isFull || slot.status === 'completed';
+                  const isDisabled = isFull || slot.status === 'completed';
 
                   return (
                     <div
@@ -133,19 +144,19 @@ export function BookExamPage() {
                           </div>
                         </div>
                         <div className="ml-4">
-                          {booked && (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              Booked
-                            </span>
-                          )}
-                          {!booked && isFull && (
+                          {isFull && (
                             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                               Full
                             </span>
                           )}
-                          {!booked && !isFull && slot.status === 'available' && (
+                          {!isFull && slot.status === 'available' && (
                             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                               Available
+                            </span>
+                          )}
+                          {slot.status === 'completed' && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              Completed
                             </span>
                           )}
                         </div>

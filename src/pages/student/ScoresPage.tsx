@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 export function ScoresPage() {
   const { data: scores, isLoading, error } = useQuery({
     queryKey: ['my-scores'],
-    queryFn: scoreService.getMyScores,
+    queryFn: () => scoreService.getMyScores(),
   });
 
   if (error) {
