@@ -33,6 +33,27 @@ const roleOptions: RoleOption[] = [
   },
 ];
 
+// Academic departments for students
+const studentDepartments = [
+  'CSE',
+  'IT',
+  'Cyber Security',
+  'Data Science',
+  'Physics',
+  'Chemistry',
+  'Electronics',
+  'Electrical',
+  'Mechanical',
+  'Civil',
+  'Arts',
+];
+
+// Departments for staff (teachers, principals, admins)
+const staffDepartments = [
+  'Administration',
+  ...studentDepartments, // Staff can also be assigned to academic departments
+];
+
 export const RegisterPage = () => {
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
   const [formData, setFormData] = useState({
@@ -259,14 +280,19 @@ export const RegisterPage = () => {
         />
       </div>
       <div>
-        <input
+        <select
           name="department"
-          type="text"
-          className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Department (Optional)"
+          className="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           value={formData.department}
           onChange={handleChange}
-        />
+        >
+          <option value="">Select Department (Optional)</option>
+          {studentDepartments.map((dept) => (
+            <option key={dept} value={dept}>
+              {dept}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <select
@@ -300,14 +326,19 @@ export const RegisterPage = () => {
         />
       </div>
       <div>
-        <input
+        <select
           name="department"
-          type="text"
-          className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Department (Optional)"
+          className="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           value={formData.department}
           onChange={handleChange}
-        />
+        >
+          <option value="">Select Department (Optional)</option>
+          {staffDepartments.map((dept) => (
+            <option key={dept} value={dept}>
+              {dept}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <input
@@ -346,14 +377,19 @@ export const RegisterPage = () => {
         />
       </div>
       <div>
-        <input
+        <select
           name="department"
-          type="text"
-          className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Department (Optional)"
+          className="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           value={formData.department}
           onChange={handleChange}
-        />
+        >
+          <option value="">Select Department (Optional)</option>
+          {staffDepartments.map((dept) => (
+            <option key={dept} value={dept}>
+              {dept}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <input
@@ -383,14 +419,19 @@ export const RegisterPage = () => {
         />
       </div>
       <div>
-        <input
+        <select
           name="department"
-          type="text"
-          className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Department (Optional)"
+          className="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           value={formData.department}
           onChange={handleChange}
-        />
+        >
+          <option value="">Select Department (Optional)</option>
+          {staffDepartments.map((dept) => (
+            <option key={dept} value={dept}>
+              {dept}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <input
