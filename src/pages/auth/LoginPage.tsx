@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 
-export function LoginPage() {
+export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -91,4 +91,4 @@ export function LoginPage() {
       </div>
     </div>
   );
-}
+};

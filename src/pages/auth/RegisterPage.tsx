@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 
-export function RegisterPage() {
+export const RegisterPage = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -138,4 +138,4 @@ export function RegisterPage() {
       </div>
     </div>
   );
-}
+};

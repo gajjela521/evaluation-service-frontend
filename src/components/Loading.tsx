@@ -1,4 +1,4 @@
-export function Loading() {
+export const Loading = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="text-center">
@@ -7,9 +7,9 @@ export function Loading() {
       </div>
     </div>
   );
-}
+};
 
-export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
+export const LoadingSpinner = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => {
   const sizeClasses = {
     sm: 'h-4 w-4 border-2',
     md: 'h-8 w-8 border-2',
@@ -23,4 +23,4 @@ export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
       ></div>
     </div>
   );
-}
+};

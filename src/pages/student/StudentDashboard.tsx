@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
-export function StudentDashboard() {
+export const StudentDashboard = () => {
   const { user } = useAuth();
 
   const menuItems = [
@@ -45,4 +45,4 @@ export function StudentDashboard() {
       </div>
     </div>
   );
-}
+};

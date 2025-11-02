@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { scoreService } from '@/services/score.service';
 import toast from 'react-hot-toast';
 
-export function ScoresPage() {
+export const ScoresPage = () => {
   const { data: scores, isLoading, error } = useQuery({
     queryKey: ['my-scores'],
     queryFn: () => scoreService.getMyScores(),
@@ -152,4 +152,4 @@ export function ScoresPage() {
       </div>
     </div>
   );
-}
+};

@@ -25,7 +25,7 @@ interface EndpointCheck {
   timestamp: string;
 }
 
-export function StatusPage() {
+export const StatusPage = () => {
   const [endpoints, setEndpoints] = useState<EndpointCheck[]>([]);
   const [lastUpdate, setLastUpdate] = useState<string>(new Date().toISOString());
 
@@ -245,4 +245,4 @@ export function StatusPage() {
       </div>
     </div>
   );
-}
+};

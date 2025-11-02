@@ -7,7 +7,7 @@ interface ProtectedRouteProps {
   allowedRoles?: UserRole[];
 }
 
-export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
+export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const { user, isLoading } = useAuth();
   const location = useLocation();
 
@@ -31,4 +31,4 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
   }
 
   return <>{children}</>;
-}
+};

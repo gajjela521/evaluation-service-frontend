@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { examService } from '@/services/exam.service';
 import toast from 'react-hot-toast';
 
-export function SubjectsPage() {
+export const SubjectsPage = () => {
   const { data: subjects, isLoading, error } = useQuery({
     queryKey: ['subjects'],
     queryFn: () => examService.getSubjects('default'),
@@ -72,4 +72,4 @@ export function SubjectsPage() {
       </div>
     </div>
   );
-}
+};

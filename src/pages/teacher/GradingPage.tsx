@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { scoreService } from '@/services/score.service';
 import toast from 'react-hot-toast';
 
-export function GradingPage() {
+export const GradingPage = () => {
   const [formData, setFormData] = useState({
     studentId: '',
     subjectId: '',
@@ -197,4 +197,4 @@ export function GradingPage() {
       </div>
     </div>
   );
-}
+};

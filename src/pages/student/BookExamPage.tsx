@@ -5,7 +5,7 @@ import { examService } from '@/services/exam.service';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 
-export function BookExamPage() {
+export const BookExamPage = () => {
   const [searchParams] = useSearchParams();
   const subjectId = searchParams.get('subjectId') || '';
   const [selectedSlotId, setSelectedSlotId] = useState<string>('');
@@ -183,4 +183,4 @@ export function BookExamPage() {
       </div>
     </div>
   );
-}
+};

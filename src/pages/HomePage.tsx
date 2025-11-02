@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
-export function HomePage() {
+export const HomePage = () => {
   const { isAuthenticated, user } = useAuth();
 
   if (isAuthenticated && user) {
@@ -77,4 +77,4 @@ export function HomePage() {
       </div>
     </div>
   );
-}
+};

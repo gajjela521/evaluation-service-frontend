@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import type { Student } from '@/types';
 
-export function ProfilePage() {
+export const ProfilePage = () => {
   const { user, logout } = useAuth();
   const student = user as Student;
 
@@ -100,4 +100,4 @@ export function ProfilePage() {
       </div>
     </div>
   );
-}
+};
