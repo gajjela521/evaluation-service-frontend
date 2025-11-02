@@ -4,18 +4,24 @@ import { useAuth } from '@/contexts/AuthContext';
 export const TeacherDashboard = () => {
   const { user } = useAuth();
 
+  // Determine the base path based on role
+  const basePath = user?.role === 'principal' ? '/principal' : '/teacher';
+  const roleTitle = user?.role === 'principal' ? 'Principal' : 'Teacher';
+
   const menuItems = [
-    { title: 'Grade Students', path: '/teacher/grading', description: 'Submit and manage grades' },
-    { title: 'View Subjects', path: '/teacher/subjects', description: 'See assigned subjects' },
-    { title: 'Profile', path: '/teacher/profile', description: 'Manage your profile' },
-  ];
+    { title: 'Grade Students', path: `${basePath}/grading`, description: 'Submit and manage grades', roles: ['teacher'] },
+    { title: 'Students Information', path: `${basePath}/students`, description: 'View student details and information', roles: ['teacher', 'principal'] },
+    { title: 'Students Results', path: `${basePath}/students-results`, description: 'View all student exam results', roles: ['teacher', 'principal'] },
+    { title: 'View Subjects', path: `${basePath}/subjects`, description: 'See assigned subjects', roles: ['teacher'] },
+    { title: 'Profile', path: `${basePath}/profile`, description: 'Manage your profile', roles: ['teacher', 'principal'] },
+  ].filter(item => item.roles.includes(user?.role || 'teacher'));
 
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Teacher Portal</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{roleTitle} Portal</h1>
             <Link to="/" className="text-blue-600 hover:text-blue-800">
               Home
             </Link>

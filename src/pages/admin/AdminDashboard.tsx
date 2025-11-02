@@ -6,6 +6,27 @@ export const AdminDashboard = () => {
 
   const menuItems = [
     {
+      title: 'Approval Management',
+      path: '/admin/approvals',
+      description: 'Approve or reject user registrations',
+      priority: true,
+    },
+    {
+      title: 'Students Information',
+      path: '/teacher/students',
+      description: 'View all student details',
+    },
+    {
+      title: 'Students Results',
+      path: '/teacher/students-results',
+      description: 'View all student exam results',
+    },
+    {
+      title: 'Grade Students',
+      path: '/teacher/grading',
+      description: 'Submit and manage grades',
+    },
+    {
       title: 'System Status',
       path: '/status',
       description: 'Monitor API health and performance',
@@ -46,9 +67,18 @@ export const AdminDashboard = () => {
             <Link
               key={item.path}
               to={item.path}
-              className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition"
+              className={`block p-6 bg-white rounded-lg shadow hover:shadow-md transition ${
+                item.priority ? 'border-2 border-blue-500' : ''
+              }`}
             >
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">{item.title}</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                {item.title}
+                {item.priority && (
+                  <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    Important
+                  </span>
+                )}
+              </h3>
               <p className="text-gray-600">{item.description}</p>
             </Link>
           ))}

@@ -17,7 +17,10 @@ import { ScoresPage } from './pages/student/ScoresPage';
 import { ProfilePage } from './pages/student/ProfilePage';
 import { TeacherDashboard } from './pages/teacher/TeacherDashboard';
 import { GradingPage } from './pages/teacher/GradingPage';
+import { StudentsInfoPage } from './pages/teacher/StudentsInfoPage';
+import { StudentsResultsPage } from './pages/teacher/StudentsResultsPage';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { ApprovalManagementPage } from './pages/admin/ApprovalManagementPage';
 import { StatusPage } from './pages/status/StatusPage';
 
 // Create a client
@@ -90,7 +93,7 @@ const App = () => {
             <Route
               path="/teacher"
               element={
-                <ProtectedRoute allowedRoles={['teacher']}>
+                <ProtectedRoute allowedRoles={['teacher', 'admin']}>
                   <TeacherDashboard />
                 </ProtectedRoute>
               }
@@ -98,8 +101,60 @@ const App = () => {
             <Route
               path="/teacher/grading"
               element={
-                <ProtectedRoute allowedRoles={['teacher']}>
+                <ProtectedRoute allowedRoles={['teacher', 'admin']}>
                   <GradingPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/teacher/students"
+              element={
+                <ProtectedRoute allowedRoles={['teacher', 'principal', 'admin']}>
+                  <StudentsInfoPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/teacher/students-results"
+              element={
+                <ProtectedRoute allowedRoles={['teacher', 'principal', 'admin']}>
+                  <StudentsResultsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Principal routes */}
+            <Route
+              path="/principal"
+              element={
+                <ProtectedRoute allowedRoles={['principal', 'admin']}>
+                  <TeacherDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/principal/students"
+              element={
+                <ProtectedRoute allowedRoles={['principal', 'admin']}>
+                  <StudentsInfoPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/principal/students-results"
+              element={
+                <ProtectedRoute allowedRoles={['principal', 'admin']}>
+                  <StudentsResultsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* IT Admin routes */}
+            <Route
+              path="/it-admin"
+              element={
+                <ProtectedRoute allowedRoles={['it_admin', 'admin']}>
+                  <AdminDashboard />
                 </ProtectedRoute>
               }
             />
@@ -110,6 +165,14 @@ const App = () => {
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/approvals"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <ApprovalManagementPage />
                 </ProtectedRoute>
               }
             />
