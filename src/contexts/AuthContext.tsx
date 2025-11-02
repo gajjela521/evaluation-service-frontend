@@ -1,14 +1,14 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { authService } from '@/services/auth.service';
-import type { User, LoginCredentials, StudentRegistration, AuthResponse } from '@/types';
+import type { User, LoginCredentials, Registration, AuthResponse } from '@/types';
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (credentials: LoginCredentials) => Promise<void>;
-  register: (data: StudentRegistration) => Promise<void>;
+  register: (data: Registration) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(response.user);
   };
 
-  const register = async (data: StudentRegistration) => {
+  const register = async (data: Registration) => {
     const response: AuthResponse = await authService.register(data);
     authService.saveAuthData(response);
     setUser(response.user);

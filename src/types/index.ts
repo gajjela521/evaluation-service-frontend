@@ -1,5 +1,5 @@
 // User roles
-export type UserRole = 'student' | 'teacher' | 'admin';
+export type UserRole = 'student' | 'teacher' | 'principal' | 'it_admin' | 'admin';
 
 // User types
 export interface User {
@@ -7,6 +7,7 @@ export interface User {
   email: string;
   name: string;
   role: UserRole;
+  phone?: string;
 }
 
 export interface Student extends User {
@@ -21,6 +22,21 @@ export interface Teacher extends User {
   employeeId: string;
   department?: string;
   specialization?: string;
+  qualification?: string;
+}
+
+export interface Principal extends User {
+  role: 'principal';
+  employeeId: string;
+  department?: string;
+  yearsOfExperience?: number;
+}
+
+export interface ITAdmin extends User {
+  role: 'it_admin';
+  employeeId: string;
+  department?: string;
+  systemRole?: string;
 }
 
 export interface Admin extends User {
@@ -112,15 +128,43 @@ export interface SystemHealth {
 }
 
 // Registration
-export interface StudentRegistration {
+export interface BaseRegistration {
   name: string;
   email: string;
   password: string;
+  phone?: string;
+}
+
+export interface StudentRegistration extends BaseRegistration {
+  role: 'student';
   enrollmentNumber: string;
   department?: string;
   semester?: number;
-  phone?: string;
 }
+
+export interface TeacherRegistration extends BaseRegistration {
+  role: 'teacher';
+  employeeId: string;
+  department?: string;
+  specialization?: string;
+  qualification?: string;
+}
+
+export interface PrincipalRegistration extends BaseRegistration {
+  role: 'principal';
+  employeeId: string;
+  department?: string;
+  yearsOfExperience?: number;
+}
+
+export interface ITAdminRegistration extends BaseRegistration {
+  role: 'it_admin';
+  employeeId: string;
+  department?: string;
+  systemRole?: string;
+}
+
+export type Registration = StudentRegistration | TeacherRegistration | PrincipalRegistration | ITAdminRegistration;
 
 // API Response wrapper
 export interface ApiResponse<T> {
