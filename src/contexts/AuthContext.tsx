@@ -30,13 +30,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (credentials: LoginCredentials) => {
     const response: AuthResponse = await authService.login(credentials);
     authService.saveAuthData(response);
-    setUser(response.user);
+    const savedUser = authService.getStoredUser();
+    setUser(savedUser);
   };
 
   const register = async (data: Registration) => {
     const response: AuthResponse = await authService.register(data);
     authService.saveAuthData(response);
-    setUser(response.user);
+    const savedUser = authService.getStoredUser();
+    setUser(savedUser);
   };
 
   const logout = async () => {

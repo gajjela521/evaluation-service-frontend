@@ -152,9 +152,8 @@ export const RegisterPage = () => {
       await register(registrationData);
       toast.success('Registration successful!');
 
-      // Navigate based on role
-      const dashboardPath = selectedRole === 'student' ? '/student' : `/${selectedRole.replace('_', '-')}`;
-      navigate(dashboardPath);
+      // Navigate to approval pending page
+      navigate('/approval-pending');
     } catch (error) {
       toast.error('Registration failed. Please try again.');
       console.error('Registration error:', error);

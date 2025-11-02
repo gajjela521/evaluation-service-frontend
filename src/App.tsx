@@ -9,6 +9,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { RegisterPage } from './pages/auth/RegisterPage';
+import { ApprovalPendingPage } from './pages/auth/ApprovalPendingPage';
 import { StudentDashboard } from './pages/student/StudentDashboard';
 import { SubjectsPage } from './pages/student/SubjectsPage';
 import { BookExamPage } from './pages/student/BookExamPage';
@@ -41,6 +42,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/approval-pending" element={<ApprovalPendingPage />} />
 
             {/* Student routes */}
             <Route

@@ -37,8 +37,21 @@ export const authService = {
   },
 
   saveAuthData(authResponse: AuthResponse): void {
-    localStorage.setItem('auth_token', authResponse.token);
-    localStorage.setItem('user', JSON.stringify(authResponse.user));
+    if (authResponse.token) {
+      localStorage.setItem('auth_token', authResponse.token);
+    }
+
+    // Convert AuthResponse to User object
+    const user: User = {
+      id: authResponse.userId || '',
+      email: authResponse.email || '',
+      name: authResponse.name || '',
+      role: authResponse.role || 'student',
+      isApproved: authResponse.isApproved,
+      approvalStatus: authResponse.approvalStatus,
+    };
+
+    localStorage.setItem('user', JSON.stringify(user));
   },
 
   getStoredUser(): User | null {

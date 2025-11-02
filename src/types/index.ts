@@ -1,6 +1,9 @@
 // User roles
 export type UserRole = 'student' | 'teacher' | 'principal' | 'it_admin' | 'admin';
 
+// Approval status
+export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'AUTO_APPROVED';
+
 // User types
 export interface User {
   id: string;
@@ -8,6 +11,8 @@ export interface User {
   name: string;
   role: UserRole;
   phone?: string;
+  isApproved?: boolean;
+  approvalStatus?: ApprovalStatus;
 }
 
 export interface Student extends User {
@@ -50,8 +55,14 @@ export interface LoginCredentials {
 }
 
 export interface AuthResponse {
-  user: User;
-  token: string;
+  userId?: string;
+  email?: string;
+  name?: string;
+  role?: UserRole;
+  isApproved?: boolean;
+  approvalStatus?: ApprovalStatus;
+  token?: string;
+  message?: string;
 }
 
 // Subject
